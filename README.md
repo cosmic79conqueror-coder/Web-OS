@@ -1,43 +1,31 @@
-#  Web OS — The Turbo‑Charged Operating System for the Internet
+TurboOS - Web Interface
 
-Welcome to **Web OS**, the most *insane* browser‑based OS you’ll ever “drive”. Why walk when you can **rev** your way through web apps, documents, and mischief, all while the scent of gasoline (metaphorically) lingers in the digital air?
+A browser-based OS interface themed around car tuning, engine telemetry, and horsepower. Built with vanilla HTML, CSS, and JavaScript.
 
-##  Philosophy
-- **Horsepower for your tabs**: Every Chrome tab is a cylinder. More tabs = more horsepower. (Don’t blame us if your fans spin up.)
-- **No turbolag**: We’ve tuned the kernel to eliminate lag. If you feel a delay, it’s just the sound of your imagination catching up.
-- **Bike‑lean navigation**: Swipe, lean, and accelerate through menus like a ninja on a sportbike.
+Features
+- Boot Sequence: Custom RPM gauge animation and ECU flashing load screen.
+- Ignition Screen: Glitch text effects and an ignition button to launch the desktop.
+- Heads Up Display (HUD): Top bar with live system status and boost pressure tracking.
+- Desktop Apps: 
+  - Engine Control: Settings menu with sliders for boost target and toggles for TCS, Launch Control, and Drift Mode.
+  - Telemetry: Live dashboard data showing RPM, temps, and pressure.
+  - Nav System: Embedded Google Maps window.
+  - Media Deck: Spotify playlist embed.
+  - Garage: File system to load different ECU map files (clicking base or pops maps updates settings and HUD boost readout).
+  - Calendar: Scheduler supporting dates up to 2100 with reminder creation and deletion.
+- Window Manager: Apps open in draggable, closable glassmorphic windows with dynamic z-index layering.
+- Custom Cursor: Neon red and cyan targeting cursor that trails mouse movement and reacts to clicks, drags, and hovers.
+- Live Chronometer: Real-time clock widget with rotating outer rings.
 
-##  Features (because who doesn’t love a checklist?)
-| Feature | Description |
-|---|---|
-| ** Car Mode** | Layouts that look like a dashboard. Gauges, RPM bars, and the occasional `vroom` sound effect on click. |
-| ** Bike Mode** | Minimalist, lean UI with handle‑bar navigation arrows. Perfect for wheely‑fast scrolling. |
-| ** Virtual Garage** | Store your favorite web apps like classic cars. Restore ‘em anytime. |
-| ** Turbo Boost** | A one‑click “turbo” that instantly doubles the font size (and half‑doubles the responsibility). |
-| ** Safety Helmet** | Built‑in “are you sure?” prompts before you delete that important file. |
-| **Custom Paint Jobs** | Change the OS theme from “Midnight Oil” to “Neon Sunset”. Because why not? |
+Setup Instructions
+1. Download all files and place them in a single folder:
+   - index.html
+   - style.css
+   - script.js
+2. Add a background image named "imgres.jpg" to the same folder.
+3. Open index.html in a web browser.
 
-## Quick Start
-1. Open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari – they all love a good race).
-2. Click **“Boot the OS”** (or just stare at the pretty title – it works either way).
-3. Choose **Car Mode** or **Bike Mode** from the tiny hidden menu (press `F1` twice, then wiggle your mouse).
-4. Start launching web “applications” from the virtual garage.
-
-## Roadmap (or “track list”)
-- [ ] Add a `synth` engine sound on every notification.
-- [ ] Implement “fuel gauge” that empties when you open too many tabs.
-- [ ] Create a multiplayer racing mode where cursors are cars trying to out‑lap each other.
-- [ ] Integrate real‑world gasoline price widget (just for the memes).
-
-## License
-This project is licensed under the **“Open‑Road” License**: you’re free to fork, modify, or drive it into a wall as long as you attribute the original creators and don’t claim you invented the wheel.
-
-## Credits
-- **Design**: The spirit of a 1965 Mustang mixed with a 2023 Ninja H2.
-- **Fonts**: Orbitron (for that futuristic rev‑counter look) and Roboto (because even horses need a sensible sans‑serif).
-- **Ideas**: Every coffee‑fuelled developer who’s ever wanted their OS to go *vroom*.
-
----
-
-> **Rev your browsers, not your expectations.**  
-> **Web OS** – where every click is a gear shift and every page is a straightaway.
+Notes
+- No external frameworks required.
+- Spotify and Google Maps require an active internet connection.
+- Dragging windows disables iframe pointer-events automatically for smooth movement.
