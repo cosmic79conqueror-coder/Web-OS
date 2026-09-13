@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto OS - Welcome</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Custom Background Image -->
+  <div class="hero-bg"></div>
+  
+  <!-- Atmosphere / Overlays -->
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <!-- Boot Screen (Initial Load) -->
+  <main class="boot-screen" id="bootScreen">
+    <div class="rpm-gauge">
+      <div class="needle" id="needle"></div>
+      <div class="center-pin"></div>
+    </div>
+    <div class="boot-text">
+      <h2 id="bootStatus" class="glitch-text">ECU FLASHING...</h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Welcome Screen (Main Hero) -->
+  <main class="hero hidden" id="mainHero">
+    <div class="container">
+      <h1 class="title glitch" data-text="WELCOME TO THE WORLD OF HORSEPOWER">
+        welcome to the world of horsepower
+      </h1>
+      <p class="subtitle type-writer" id="typeWriter"></p>
+      <button class="ignition-btn">IGNITION <span class="blink">_</span></button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
