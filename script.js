@@ -16,11 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let progress = 0;
   let phaseIndex = 0;
   
-  // RPM Revving & Boot Sequence
   const bootInterval = setInterval(() => {
     progress += Math.random() * 8;
     
-    // Needle bounce logic
     let revBase = (progress / 100) * 180;
     let revSpike = Math.random() > 0.5 ? (Math.random() * 50) : (Math.random() * -15);
     let finalRev = Math.min(180, revBase + revSpike);
@@ -31,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
       progress = 100;
       clearInterval(bootInterval);
       
-      // Pin the needle at redline before load
       needle.style.transform = `rotate(185deg)`; 
       needle.style.boxShadow = `0 0 40px #ff1a3d, 0 0 15px #fff`;
       
@@ -40,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     progressBar.style.width = `${progress}%`;
     
-    // Switch status text
     const expectedPhase = Math.floor((progress / 100) * bootPhases.length);
     if (expectedPhase > phaseIndex && expectedPhase < bootPhases.length) {
       phaseIndex = expectedPhase;

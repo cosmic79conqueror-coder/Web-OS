@@ -1,6 +1,4 @@
-/* Base Resets & Fonts */
 :root {
-  /* Colors matched to the red and cyan headlights in your image */
   --neon-red: #ff1a3d;
   --neon-blue: #00f0ff;
   --dark-bg: #050505;
@@ -16,9 +14,6 @@ body, html {
   overflow: hidden;
 }
 
-/* =========================================
-   CUSTOM BACKGROUND IMAGE SETUP
-   ========================================= */
 .hero-bg {
   position: fixed;
   top: -5%; 
@@ -39,7 +34,6 @@ body, html {
   100% { transform: scale(1.05) translate(-1%, -1%); filter: contrast(1.3) brightness(0.8) saturate(1.4); }
 }
 
-/* Overlays for the screen effect */
 .scanlines {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -57,9 +51,6 @@ body, html {
   pointer-events: none;
 }
 
-/* =========================================
-   UI LAYOUT & RPM GAUGE 
-   ========================================= */
 .boot-screen, .hero {
   display: flex;
   flex-direction: column;
@@ -116,9 +107,6 @@ body, html {
   box-shadow: 0 0 15px #fff, 0 0 30px var(--neon-blue);
 }
 
-/* =========================================
-   TYPOGRAPHY 
-   ========================================= */
 .boot-text h2 {
   font-family: 'Syncopate', sans-serif;
   font-size: 1.5rem;
@@ -202,7 +190,6 @@ body, html {
 .blink { animation: blink 1s infinite step-end; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* Subtle Text Glitch */
 .glitch::before, .glitch::after {
   content: attr(data-text);
   position: absolute;
