@@ -21,10 +21,9 @@ body, html {
   width: 110%; 
   height: 110%;
   z-index: -4;
-  background-image: url('imgres.jpg'); /* Linked exactly to your file */
+  background-image: url('imgres.jpg');
   background-size: cover;
   background-position: center;
-  /* Cinematic breathing animation */
   animation: ambientPan 15s ease-in-out infinite alternate;
   filter: contrast(1.2) brightness(0.6) saturate(1.2);
 }
