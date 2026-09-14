@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   window.autoSettings = { boost: 14, tcs: false, launch: true, exhaust: true, drift: false };
 
-<<<<<<< HEAD
   const needle = document.getElementById('needle');
   const progressBar = document.getElementById('progressBar');
   const bootStatus = document.getElementById('bootStatus');
@@ -10,16 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const typeWriterElement = document.getElementById('typeWriter');
   const startEngineBtn = document.getElementById('startEngineBtn');
   const desktopScreen = document.getElementById('desktopScreen');
-=======
-  let needle = document.getElementById('needle')
-  let progressBar = document.getElementById('progressBar')
-  let bootStatus = document.getElementById('bootStatus')
-  let bootScreen = document.getElementById('bootScreen')
-  let ignitionScreen = document.getElementById('ignitionScreen')
-  let typeWriterElement = document.getElementById('typeWriter')
-   let startEngineBtn = document.getElementById('startEngineBtn')
- let desktopScreen = document.getElementById('desktopScreen')
->>>>>>> 138caf55d55693e74c22c9b64296051f220b76bd
 
   const bootPhases = ["ECU MAPPING...", "SPOOLING TWIN TURBOS...", "INJECTORS AT 100%...", "LAUNCH CONTROL ACTIVE."];
   let progress = 0, phaseIndex = 0;
