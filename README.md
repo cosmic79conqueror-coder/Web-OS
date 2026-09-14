@@ -6,7 +6,7 @@ Features
 - Boot Sequence: RPM gauge animation and ECU flashing load screen.
 - Ignition Screen: Glitch text effects and an ignition button to launch the desktop.
 - HUD: Top bar displaying live system stats and boost pressure.
-- Desktop Apps:
+Desktop Apps:
 - Engine Control: Tune target boost (10-30 psi) and toggle TCS, Launch Control, Exhaust, and Drift Mode.
 - Telemetry: Real-time dashboard stats.
 - Nav System: Embedded Google Maps window locked to Panvel/Navi Mumbai.
