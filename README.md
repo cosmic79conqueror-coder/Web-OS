@@ -1,30 +1,24 @@
-TurboOS - Web Interface
+Auto OS - Web Interface
 
 A browser-based OS interface themed around car tuning, engine telemetry, and horsepower. Built with vanilla HTML, CSS, and JavaScript.
 
 Features
-- Boot Sequence: Custom RPM gauge animation and ECU flashing load screen.
+- Boot Sequence: RPM gauge animation and ECU flashing load screen.
 - Ignition Screen: Glitch text effects and an ignition button to launch the desktop.
-- Heads Up Display (HUD): Top bar with live system status and boost pressure tracking.
-- Desktop Apps: 
-  - Engine Control: Settings menu with sliders for boost target and toggles for TCS, Launch Control, and Drift Mode.
-  - Telemetry: Live dashboard data showing RPM, temps, and pressure.
-  - Nav System: Embedded Google Maps window.
-  - Media Deck: Spotify playlist embed.
-  - Garage: File system to load different ECU map files (clicking base or pops maps updates settings and HUD boost readout).
-  - Calendar: Scheduler supporting dates up to 2100 with reminder creation and deletion.
-- Window Manager: Apps open in draggable, closable glassmorphic windows with dynamic z-index layering.
-- Custom Cursor: Neon red and cyan targeting cursor that trails mouse movement and reacts to clicks, drags, and hovers.
-- Live Chronometer: Real-time clock widget with rotating outer rings.
+- HUD: Top bar displaying live system stats and boost pressure.
+- Desktop Apps:
+  - Engine Control: Tune target boost (10-30 psi) and toggle TCS, Launch Control, Exhaust, and Drift Mode.
+  - Telemetry: Real-time dashboard stats.
+  - Nav System: Embedded Google Maps window locked to Panvel/Navi Mumbai.
+  - Media Deck: Spotify player embed.
+  - Garage: File system to load ECU map files (base or pops maps update settings and boost readout).
+  - Calendar: Scheduler supporting dates up to 2100 with reminder list management.
+  - Console: Interactive TTY prompt supporting basic commands.
+- Arcade Strip: Right-hand side sliding drawer featuring a 15-second turbo clicker minigame and persistent highscore tracking via local storage.
+- Window Manager: Draggable, closable glassmorphic windows with dynamic z-index stacking.
+- Custom Cursor: Neon red and cyan follower cursor that reacts to interactive targets.
 
-Setup Instructions
-1. Download all files and place them in a single folder:
-   - index.html
-   - style.css
-   - script.js
-2. Open index.html in a web browser.
-
-Notes
-- No external frameworks required.
-- Spotify and Google Maps require an active internet connection.
-- Dragging windows disables iframe pointer-events automatically for smooth movement.
+Setup
+1. Place index.html, style.css, and script.js in a single folder.
+2. Add a background image named imgres.jpg to the folder.
+3. Open index.html in a modern browser.
