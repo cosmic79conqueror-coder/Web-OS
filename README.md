@@ -22,8 +22,7 @@ Setup Instructions
    - index.html
    - style.css
    - script.js
-2. Add a background image named "imgres.jpg" to the same folder.
-3. Open index.html in a web browser.
+2. Open index.html in a web browser.
 
 Notes
 - No external frameworks required.
