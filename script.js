@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   let bootScreen = document.getElementById('bootScreen')
   let ignitionScreen = document.getElementById('ignitionScreen')
   let typeWriterElement = document.getElementById('typeWriter')
-  let startEngineBtn = document.getElementById('startEngineBtn')
-  let desktopScreen = document.getElementById('desktopScreen')
+   let startEngineBtn = document.getElementById('startEngineBtn')
+ let desktopScreen = document.getElementById('desktopScreen')
 
   let bootPhases = ["ECU MAPPING...", "SPOOLING TWIN TURBOS...", "INJECTORS AT 100%...", "LAUNCH CONTROL ACTIVE."]
   let progress = 0, phaseIndex = 0;
