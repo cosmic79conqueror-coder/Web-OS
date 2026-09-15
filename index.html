@@ -11,85 +11,65 @@
   <div class="cursor-ring" id="cursorRing"></div>
   <div class="hero-bg"></div>
   <div class="scanlines"></div>
-  <div class="vignette"></div>
 
-  <aside class="gamestrip-trigger" id="gsTrigger">SYS</aside>
-  <aside class="gamestrip-drawer hidden" id="gsDrawer">
-    <div class="gs-header">
-      <span>ARCADE STRIP</span>
-      <button class="icon-btn" id="gsClose">X</button>
-    </div>
-    <div class="gs-body">
-      <h3>TURBO CLICKER</h3>
-      <div class="telemetry-readout">HIGH SCORE: <span id="highScoreVal">0</span></div>
-      <div class="telemetry-readout muted">TIME LEFT: <span id="timerVal" class="text-red">15</span>s</div>
-      <div id="turboCount" class="syncopate-large text-red">0 RPM</div>
-      <button class="flash-btn arcade-boost-btn" id="revArcadeBtn">JAM THROTTLE</button>
-      
-      <div class="divider-top">
-        <h3 class="subtitle-small">TELEMETRY QUICK-CHECK</h3>
-        <p class="mono text-blue" id="quickPsi">BOOST: 14.0 PSI</p>
-      </div>
-    </div>
-  </aside>
-
-  <section class="boot-screen" id="bootScreen">
-    <div class="rpm-gauge">
-      <div class="needle" id="needle"></div>
-      <div class="center-pin"></div>
-    </div>
-    <div class="boot-text">
-      <h2 id="bootStatus" class="glitch-text">ECU FLASHING...</h2>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
+  <section class="screen boot-screen" id="bootScreen">
+    <div class="boot-card">
+      <h1 class="glitch-text">TURBO OS</h1>
+      <p id="bootStatus">INITIALIZING ECU...</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
       </div>
     </div>
   </section>
 
-  <section class="hero hidden" id="ignitionScreen">
-    <div class="glass-card">
-      <h1 class="title glitch" data-text="WELCOME TO TURBO OS">welcome to turbo os</h1>
-      <p class="subtitle type-writer" id="typeWriter"></p>
-      <button class="ignition-btn" id="startEngineBtn">IGNITION <span class="blink">_</span></button>
-    </div>
-  </section>
-
-  <main class="desktop-environment hidden" id="desktopScreen">
-    <nav class="top-bar">
-      <div class="bar-center telemetry">
-        <div class="stat"><span class="label">CPU</span> <span class="value">BOOST <span id="topBarBoost">14</span>psi</span></div>
-        <div class="stat"><span class="label">RAM</span> <span class="value">TEMP 85°C</span></div>
+  <section class="screen home-screen hidden" id="homeScreen">
+    <header class="top-nav">
+      <div class="logo">TURBO OS</div>
+      <div class="telemetry-info">
+        <span>BOOST: <span id="topBoost">14</span> PSI</span>
+        <span>TEMP: <span class="text-red">85°C</span></span>
+        <span>STATUS: <span class="text-blue">ONLINE</span></span>
       </div>
-      <div class="bar-right">
-        <span class="status-icon">ONLINE</span>
-        <span class="status-icon">ALT 14.2V</span>
-      </div>
-    </nav>
+      <div class="clock" id="clockDisplay">00:00:00</div>
+    </header>
 
-    <div class="desktop-workspace">
-      <div class="app-grid">
-        <button class="app-icon" data-app="Engine Control"><div class="icon-shape settings"></div><span>Settings</span></button>
-        <button class="app-icon" data-app="Telemetry"><div class="icon-shape telemetry-icon"></div><span>Monitor</span></button>
-        <button class="app-icon" data-app="Nav System"><div class="icon-shape nav"></div><span>Navigation</span></button>
-        <button class="app-icon" data-app="Media Deck"><div class="icon-shape media"></div><span>Media</span></button>
-        <button class="app-icon" data-app="Garage"><div class="icon-shape files"></div><span>Files</span></button>
-        <button class="app-icon" data-app="Calendar"><div class="icon-shape calendar-icon"></div><span>Calendar</span></button>
-        <button class="app-icon" data-app="Console"><div class="icon-shape console-icon"></div><span>Console</span></button>
-      </div>
-
-      <div class="widget-container">
-        <div class="chronometer">
-          <div class="ring outer-ring"></div>
-          <div class="ring inner-ring"></div>
-          <div class="time-display">
-            <div class="date" id="dateDisplay">--</div>
-            <div class="time" id="timeDisplay"><span id="hours">00</span>:<span id="minutes">00</span></div>
-            <div class="seconds-container"><span id="seconds">00</span> <span id="ampm">AM</span></div>
+    <div class="workspace">
+      <div class="left-panel">
+        <div class="box">
+          <h3>SETTINGS & ECU</h3>
+          <div class="control-row">
+            <label>Boost Target</label>
+            <input type="range" id="boostRange" min="10" max="30" value="14">
           </div>
+          <div class="control-row">
+            <span>Drift Mode</span>
+            <input type="checkbox" id="driftCheck">
+          </div>
+          <div class="control-row">
+            <span>Launch Control</span>
+            <input type="checkbox" id="launchCheck" checked>
+          </div>
+          <button class="btn" id="flashBtn">FLASH ECU</button>
+        </div>
+
+        <div class="box">
+          <h3>MONITOR</h3>
+          <p>RPM: <span class="text-red">8,450</span></p>
+          <p>Oil Pressure: <span class="text-blue">NOMINAL</span></p>
+          <p>GPS: PANVEL, MH</p>
         </div>
       </div>
+
+      <div class="arcade-panel">
+        <h3>ARCADE ZONE</h3>
+        <p class="arcade-sub">TURBO CLICKER</p>
+        <div class="score-display"><span id="scoreVal">0</span> RPM</div>
+        <div class="timer-display">TIME: <span id="timerVal">15</span>s</div>
+        <button class="btn red-btn" id="arcadeBtn">JAM THROTTLE</button>
+        <div class="high-score">HIGH SCORE: <span id="highScoreVal">0</span></div>
+      </div>
     </div>
-  </main>
+  </section>
 
   <script src="script.js"></script>
 </body>
