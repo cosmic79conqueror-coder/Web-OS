@@ -1,290 +1,289 @@
 document.addEventListener('DOMContentLoaded', () => {
-  window.autoSettings = { boost: 14, tcs: false, launch: true, exhaust: true, drift: false };
+  const state = {
+    settings: { boost: 14, tcs: false, launch: true, exhaust: true, drift: false },
+    arcade: { score: 0, high: parseInt(localStorage.getItem('turboOsHighScore') || 0, 10), time: 15, active: false, timer: null },
+    zIndex: 100
+  };
 
-  const needle = document.getElementById('needle');
-  const progressBar = document.getElementById('progressBar');
-  const bootStatus = document.getElementById('bootStatus');
-  const bootScreen = document.getElementById('bootScreen');
-  const ignitionScreen = document.getElementById('ignitionScreen');
-  const typeWriterElement = document.getElementById('typeWriter');
-  const startEngineBtn = document.getElementById('startEngineBtn');
-  const desktopScreen = document.getElementById('desktopScreen');
+  const BOOT_PHASES = ["ECU MAPPING...", "SPOOLING TWIN TURBOS...", "INJECTORS AT 100%...", "LAUNCH CONTROL ACTIVE."];
+  const DAYS = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+  const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-  const bootPhases = ["ECU MAPPING...", "SPOOLING TWIN TURBOS...", "INJECTORS AT 100%...", "LAUNCH CONTROL ACTIVE."];
+  const el = {
+    needle: document.getElementById('needle'),
+    progressBar: document.getElementById('progressBar'),
+    bootStatus: document.getElementById('bootStatus'),
+    bootScreen: document.getElementById('bootScreen'),
+    ignitionScreen: document.getElementById('ignitionScreen'),
+    typeWriter: document.getElementById('typeWriter'),
+    startEngineBtn: document.getElementById('startEngineBtn'),
+    desktopScreen: document.getElementById('desktopScreen'),
+    cursorDot: document.getElementById('cursorDot'),
+    cursorRing: document.getElementById('cursorRing'),
+    gsDrawer: document.getElementById('gsDrawer'),
+    highScoreVal: document.getElementById('highScoreVal'),
+    timerVal: document.getElementById('timerVal'),
+    turboCount: document.getElementById('turboCount'),
+    revArcadeBtn: document.getElementById('revArcadeBtn'),
+    quickPsi: document.getElementById('quickPsi'),
+    clock: {
+      h: document.getElementById('hours'),
+      m: document.getElementById('minutes'),
+      s: document.getElementById('seconds'),
+      ampm: document.getElementById('ampm'),
+      date: document.getElementById('dateDisplay'),
+    }
+  };
+
   let progress = 0, phaseIndex = 0;
-
   const bootInterval = setInterval(() => {
     progress += Math.random() * 8;
     const revBase = (progress / 100) * 180;
     const revSpike = Math.random() > 0.5 ? Math.random() * 50 : Math.random() * -15;
-    needle.style.transform = `rotate(${Math.max(0, Math.min(180, revBase + revSpike))}deg)`;
+    el.needle.style.transform = `rotate(${Math.max(0, Math.min(180, revBase + revSpike))}deg)`;
 
     if (progress >= 100) {
       progress = 100;
       clearInterval(bootInterval);
-      needle.style.transform = "rotate(185deg)";
-      needle.style.boxShadow = "0 0 40px #ff1a3d, 0 0 15px #fff";
-      setTimeout(revealIgnitionScreen, 800);
+      el.needle.style.transform = "rotate(185deg)";
+      el.needle.style.boxShadow = "0 0 40px #ff1a3d, 0 0 15px #fff";
+      setTimeout(transitionToIgnition, 800);
     }
-    progressBar.style.width = progress + "%";
-    const expectedPhase = Math.floor((progress / 100) * bootPhases.length);
-    if (expectedPhase > phaseIndex && expectedPhase < bootPhases.length) {
-      bootStatus.innerText = bootPhases[phaseIndex = expectedPhase];
+    el.progressBar.style.width = `${progress}%`;
+    const expectedPhase = Math.floor((progress / 100) * BOOT_PHASES.length);
+    if (expectedPhase > phaseIndex && expectedPhase < BOOT_PHASES.length) {
+      el.bootStatus.innerText = BOOT_PHASES[phaseIndex = expectedPhase];
     }
   }, 150);
 
-  function revealIgnitionScreen() {
-    bootScreen.style.opacity = '0';
+  function transitionToIgnition() {
+    el.bootScreen.style.opacity = '0';
     setTimeout(() => {
-      bootScreen.style.display = 'none';
-      ignitionScreen.classList.remove('hidden');
-      typeWriterEffect("WITHOUT ANY FURTHER TURBOLAG");
+      el.bootScreen.style.display = 'none';
+      el.ignitionScreen.classList.remove('hidden');
+      runTypeWriter("WITHOUT ANY FURTHER TURBOLAG");
     }, 800);
   }
 
-  function typeWriterEffect(text) {
-    let i = 0;
-    typeWriterElement.innerHTML = "";
-    const typing = setInterval(() => {
-      if (i < text.length) typeWriterElement.innerHTML += text.charAt(i++);
-      else clearInterval(typing);
-    }, 70);
+  function runTypeWriter(text, i = 0) {
+    if (i === 0) el.typeWriter.innerHTML = "";
+    if (i < text.length) {
+      el.typeWriter.innerHTML += text.charAt(i);
+      setTimeout(() => runTypeWriter(text, i + 1), 70);
+    }
   }
 
-  startEngineBtn.addEventListener('click', () => {
-    ignitionScreen.style.opacity = '0';
-    ignitionScreen.style.transform = 'scale(1.1)';
+  el.startEngineBtn.addEventListener('click', () => {
+    el.ignitionScreen.style.opacity = '0';
+    el.ignitionScreen.style.transform = 'scale(1.1)';
     setTimeout(() => {
-      ignitionScreen.style.display = 'none';
-      desktopScreen.classList.remove('hidden');
+      el.ignitionScreen.style.display = 'none';
+      el.desktopScreen.classList.remove('hidden');
     }, 800);
   });
 
-  const gsTrigger = document.getElementById('gsTrigger');
-  const gsDrawer = document.getElementById('gsDrawer');
-  const gsClose = document.getElementById('gsClose');
-  let arcadeScore = 0, highScore = parseInt(localStorage.getItem('autoOsHighScore') || 0);
-  let timeLeft = 15, timerActive = false, timerInterval = null;
+  if (el.highScoreVal) el.highScoreVal.innerText = state.arcade.high;
+  document.getElementById('gsTrigger')?.addEventListener('click', () => el.gsDrawer.classList.toggle('hidden'));
+  document.getElementById('gsClose')?.addEventListener('click', () => el.gsDrawer.classList.add('hidden'));
 
-  if (gsTrigger) gsTrigger.addEventListener('click', () => gsDrawer.classList.toggle('hidden'));
-  if (gsClose) gsClose.addEventListener('click', () => gsDrawer.classList.add('hidden'));
+  el.revArcadeBtn?.addEventListener('click', () => {
+    if (!state.arcade.active) {
+      state.arcade.active = true;
+      state.arcade.score = 0;
+      state.arcade.time = 15;
+      if (el.timerVal) el.timerVal.innerText = state.arcade.time;
+      if (el.turboCount) el.turboCount.innerText = "0 RPM";
+      el.revArcadeBtn.innerText = "JAM THROTTLE";
 
-  const highScoreValEl = document.getElementById('highScoreVal');
-  if (highScoreValEl) highScoreValEl.innerText = highScore;
-
-  const revBtn = document.getElementById('revArcadeBtn');
-  if (revBtn) {
-    revBtn.addEventListener('click', () => {
-      const timerValEl = document.getElementById('timerVal');
-      const arcadeCountEl = document.getElementById('turboCount');
-      if (!timerActive) {
-        timerActive = true; arcadeScore = 0; timeLeft = 15;
-        if (timerValEl) timerValEl.innerText = timeLeft;
-        if (arcadeCountEl) arcadeCountEl.innerText = "0 RPM";
-        revBtn.innerText = "JAM THROTTLE";
-        timerInterval = setInterval(() => {
-          timeLeft--;
-          if (timerValEl) timerValEl.innerText = timeLeft;
-          if (timeLeft <= 0) {
-            clearInterval(timerInterval); timerActive = false;
-            revBtn.innerText = "RESTART RUN";
-            if (arcadeScore > highScore) {
-              highScore = arcadeScore;
-              localStorage.setItem('autoOsHighScore', highScore);
-              if (highScoreValEl) highScoreValEl.innerText = highScore;
-            }
+      state.arcade.timer = setInterval(() => {
+        state.arcade.time--;
+        if (el.timerVal) el.timerVal.innerText = state.arcade.time;
+        if (state.arcade.time <= 0) {
+          clearInterval(state.arcade.timer);
+          state.arcade.active = false;
+          el.revArcadeBtn.innerText = "RESTART RUN";
+          if (state.arcade.score > state.arcade.high) {
+            state.arcade.high = state.arcade.score;
+            localStorage.setItem('turboOsHighScore', state.arcade.high);
+            if (el.highScoreVal) el.highScoreVal.innerText = state.arcade.high;
           }
-        }, 1000);
-      }
-      if (timerActive) {
-        arcadeScore += Math.floor(Math.random() * 450 + 150);
-        if (arcadeCountEl) arcadeCountEl.innerText = arcadeScore + " RPM";
-        const quickPsi = document.getElementById('quickPsi');
-        if (quickPsi) quickPsi.innerText = "BOOST: " + (arcadeScore > 8000 ? "26.4 PSI" : "16.8 PSI");
-      }
-    });
-  }
-
-  const hEl = document.getElementById('hours'), mEl = document.getElementById('minutes'), sEl = document.getElementById('seconds'), ampmEl = document.getElementById('ampm'), dateEl = document.getElementById('dateDisplay');
-  const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
-  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        }
+      }, 1000);
+    }
+    if (state.arcade.active) {
+      state.arcade.score += Math.floor(Math.random() * 450 + 150);
+      if (el.turboCount) el.turboCount.innerText = `${state.arcade.score} RPM`;
+      if (el.quickPsi) el.quickPsi.innerText = `BOOST: ${state.arcade.score > 8000 ? '26.4' : '16.8'} PSI`;
+    }
+  });
 
   function updateClock() {
     const now = new Date();
-    let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+    let h = now.getHours();
     const ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
-    hEl.textContent = h < 10 ? '0' + h : h;
-    mEl.textContent = m < 10 ? '0' + m : m;
-    sEl.textContent = s < 10 ? '0' + s : s;
-    ampmEl.textContent = ampm;
-    dateEl.textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+    el.clock.h.textContent = String(h).padStart(2, '0');
+    el.clock.m.textContent = String(now.getMinutes()).padStart(2, '0');
+    el.clock.s.textContent = String(now.getSeconds()).padStart(2, '0');
+    el.clock.ampm.textContent = ampm;
+    el.clock.date.textContent = `${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()}`;
   }
-  updateClock(); setInterval(updateClock, 1000);
-
-  function getSettingsHTML() {
-    return `<h3>ECU MAPPING & DYNAMICS</h3>
-      <label>Boost Target (PSI): <span id="boost-val">${window.autoSettings.boost}</span></label>
-      <input type="range" id="setting-boost" min="10" max="30" value="${window.autoSettings.boost}"><br>
-      <div class="setting-row"><span>Traction Control (TCS)</span><input type="checkbox" id="setting-tcs" ${window.autoSettings.tcs ? 'checked' : ''}></div>
-      <div class="setting-row"><span>Launch Control</span><input type="checkbox" id="setting-launch" ${window.autoSettings.launch ? 'checked' : ''}></div>
-      <div class="setting-row"><span>Active Exhaust Valves</span><input type="checkbox" id="setting-exhaust" ${window.autoSettings.exhaust ? 'checked' : ''}></div>
-      <div class="setting-row"><span>Drift Mode</span><input type="checkbox" id="setting-drift" ${window.autoSettings.drift ? 'checked' : ''}></div>
-      <button class="flash-btn" id="flash-ecu-btn">FLASH ECU</button>`;
-  }
+  updateClock();
+  setInterval(updateClock, 1000);
 
   const consoleLogs = ["BOOT SEQUENCE OK", "CAN-BUS SYNCED", "OIL PRESSURE NOMINAL", "TURBO SPOOL READY"];
-  const appContentData = {
-    'Telemetry': '<h3>LIVE DATA</h3><p>RPM: <span class="blink" style="color:var(--neon-red); font-size:1.5rem;">8450</span></p><p>Boost: 14.2 psi</p><p>Oil Temp: 104°C</p><p>Coolant: 90°C</p><p>Intake Temp: 35°C</p>',
-    'Nav System': `<h3>SATELLITE LINK</h3><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120638.0645226495!2d73.045437!3d18.989401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7e8c71cc169b9%3A0x629b350415a77c38!2sPanvel%2C%20Navi%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1716382000000!5m2!1sen!2sin" width="100%" height="260" style="border:0; border-radius:5px;" allowfullscreen="" loading="lazy"></iframe><p style="text-align:center; color:var(--neon-blue); font-size:0.8rem; margin-top:8px;">GPS LOCKED: PANVEL, MAHARASHTRA</p>`,
+  const templates = {
+    'Engine Control': () => `
+      <h3>ECU MAPPING & DYNAMICS</h3>
+      <label>Boost Target (PSI): <span id="boost-val">${state.settings.boost}</span></label>
+      <input type="range" id="setting-boost" min="10" max="30" value="${state.settings.boost}">
+      <div class="setting-row"><span>Traction Control (TCS)</span><input type="checkbox" id="setting-tcs" ${state.settings.tcs ? 'checked' : ''}></div>
+      <div class="setting-row"><span>Launch Control</span><input type="checkbox" id="setting-launch" ${state.settings.launch ? 'checked' : ''}></div>
+      <div class="setting-row"><span>Active Exhaust Valves</span><input type="checkbox" id="setting-exhaust" ${state.settings.exhaust ? 'checked' : ''}></div>
+      <div class="setting-row"><span>Drift Mode</span><input type="checkbox" id="setting-drift" ${state.settings.drift ? 'checked' : ''}></div>
+      <button class="flash-btn" id="flash-ecu-btn">FLASH ECU</button>
+    `,
+    'Telemetry': '<h3>LIVE DATA</h3><p>RPM: <span class="blink text-red" style="font-size:1.5rem;">8450</span></p><p>Boost: 14.2 psi</p><p>Oil Temp: 104°C</p><p>Coolant: 90°C</p>',
+    'Nav System': `<h3>SATELLITE LINK</h3><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120638.0645226495!2d73.045437!3d18.989401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7e8c71cc169b9%3A0x629b350415a77c38!2sPanvel%2C%20Navi%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1716382000000!5m2!1sen!2sin" width="100%" height="260" style="border:0;border-radius:5px;" allowfullscreen="" loading="lazy"></iframe><p style="text-align:center;color:var(--neon-blue);font-size:0.8rem;margin-top:8px;">GPS LOCKED: PANVEL, MAHARASHTRA</p>`,
     'Media Deck': `<h3>SPOTIFY DECK</h3><iframe style="border-radius:12px;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0" width="100%" height="320" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`,
-    'Garage': `<h3>FILESYSTEM</h3><ul style="max-height: 220px; overflow-y: auto;"><li><span>logs_2026/</span></li><li><span>dyno_runs/</span></li><li class="map-file" data-map="base"><span>map_v1_base.bin (LOAD)</span> <span style="color:#666">2.0 MB</span></li><li class="map-file" data-map="pops"><span>map_v2_pops.bin (LOAD)</span> <span style="color:#666">2.1 MB</span></li><li><span>suspension_track.txt</span> <span style="color:#666">4 KB</span></li><li><span>datalog_13-09-2026.csv</span> <span style="color:#666">14.5 MB</span></li></ul>`,
-    'Calendar': `<h3>SCHEDULER / CALENDAR</h3><label>Select Date (Up to 2100):</label><input type="date" id="cal-date" min="2026-01-01" max="2100-12-31" style="width:100%;margin-bottom:10px;box-sizing:border-box;"><div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" id="rem-text" placeholder="Reminder..." style="flex:1;"><button class="flash-btn" id="add-rem-btn" style="width:auto;padding:5px 15px;">ADD</button></div><ul id="reminder-list" style="max-height:100px;overflow-y:auto;border:1px solid rgba(255,255,255,0.1);padding:5px;"><li><span>2026-09-15: Track day</span></li></ul>`,
-    'Console': `<h3>TTY CONSOLE</h3><div id="tty-out" style="font-family:monospace;font-size:0.75rem;height:180px;overflow-y:auto;background:#000;padding:10px;border:1px solid #222;">${consoleLogs.map(l => '> ' + l).join('<br>')}</div><input type="text" id="tty-in" placeholder="type command (help/clear/boost)..." style="width:100%;margin-top:10px;box-sizing:border-box;">`
+    'Garage': `<h3>FILESYSTEM</h3><ul style="max-height:220px;overflow-y:auto;"><li><span>logs_2026/</span></li><li><span>dyno_runs/</span></li><li class="map-file" data-map="base"><span>map_v1_base.bin (LOAD)</span> <span class="muted">2.0 MB</span></li><li class="map-file" data-map="pops"><span>map_v2_pops.bin (LOAD)</span> <span class="muted">2.1 MB</span></li></ul>`,
+    'Calendar': `<h3>SCHEDULER</h3><input type="date" id="cal-date" min="2026-01-01" max="2100-12-31"><input type="text" id="rem-text" placeholder="Reminder..."><button class="flash-btn" id="add-rem-btn">ADD</button><ul id="reminder-list"><li><span>2026-09-15: Track day</span></li></ul>`,
+    'Console': `<h3>TTY CONSOLE</h3><div id="tty-out" style="font-family:monospace;font-size:0.75rem;height:180px;overflow-y:auto;background:#000;padding:10px;border:1px solid #222;">${consoleLogs.map(l => '> ' + l).join('<br>')}</div><input type="text" id="tty-in" placeholder="type cmd (help/clear/boost)...">`
   };
-
-  let zIndexCounter = 100;
-  document.querySelectorAll('.app-icon').forEach(app => {
-    app.addEventListener('click', () => {
-      const icon = app.querySelector('.icon-shape');
-      icon.style.transform = "scale(0.9) skewX(10deg)";
-      icon.style.borderColor = "#ff1a3d";
-      icon.style.boxShadow = "0 0 30px #ff1a3d";
-      setTimeout(() => { icon.style.transform = ""; icon.style.borderColor = ""; icon.style.boxShadow = ""; }, 150);
-      const appName = app.getAttribute('data-name');
-      if (appName) openAppWindow(appName);
-    });
-  });
 
   function openAppWindow(name) {
     const winId = 'win-' + name.replace(/\s/g, '');
     if (document.getElementById(winId)) return;
 
     const win = document.createElement('div');
-    win.className = 'app-window'; win.id = winId;
-    win.style.zIndex = ++zIndexCounter;
-    win.style.left = (Math.random() * 120 + 80) + 'px';
-    win.style.top = (Math.random() * 80 + 70) + 'px';
+    win.className = 'app-window';
+    win.id = winId;
+    win.style.zIndex = ++state.zIndex;
+    win.style.left = `${Math.random() * 120 + 80}px`;
+    win.style.top = `${Math.random() * 80 + 70}px`;
 
-    const header = document.createElement('div');
-    header.className = 'window-header';
-    header.innerHTML = `<span>${name}</span><button class="win-close">X</button>`;
-
-    const body = document.createElement('div');
-    body.className = 'window-body';
-    body.innerHTML = (name === 'Engine Control') ? getSettingsHTML() : (appContentData[name] || '<p>LOADING...</p>');
-
-    win.append(header, body);
+    const htmlContent = typeof templates[name] === 'function' ? templates[name]() : (templates[name] || '<p>LOADING...</p>');
+    win.innerHTML = `
+      <div class="window-header"><span>${name}</span><button class="icon-btn win-close">X</button></div>
+      <div class="window-body">${htmlContent}</div>
+    `;
     document.body.appendChild(win);
 
-    const closeBtn = header.querySelector('.win-close');
-    closeBtn.addEventListener('click', () => win.remove());
+    win.querySelector('.win-close').addEventListener('click', () => win.remove());
 
-    let isDragging = false, startX, startY, initialX, initialY;
+    const header = win.querySelector('.window-header');
+    let isDragging = false, startX, startY, initX, initY;
     header.addEventListener('mousedown', e => {
-      if (e.target === closeBtn) return;
-      isDragging = true; startX = e.clientX; startY = e.clientY;
-      initialX = win.offsetLeft; initialY = win.offsetTop;
-      win.style.zIndex = ++zIndexCounter;
+      if (e.target.classList.contains('win-close')) return;
+      isDragging = true;
+      startX = e.clientX; startY = e.clientY;
+      initX = win.offsetLeft; initY = win.offsetTop;
+      win.style.zIndex = ++state.zIndex;
       document.body.classList.add('is-dragging');
     });
     window.addEventListener('mousemove', e => {
       if (!isDragging) return;
-      win.style.left = (initialX + e.clientX - startX) + 'px';
-      win.style.top = (initialY + e.clientY - startY) + 'px';
+      win.style.left = `${initX + e.clientX - startX}px`;
+      win.style.top = `${initY + e.clientY - startY}px`;
     });
     window.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('is-dragging'); });
 
     if (name === 'Console') {
-      const ttyIn = body.querySelector('#tty-in'), ttyOut = body.querySelector('#tty-out');
+      const ttyIn = win.querySelector('#tty-in'), ttyOut = win.querySelector('#tty-out');
       ttyIn.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
           const cmd = ttyIn.value.trim().toLowerCase();
           ttyOut.innerHTML += `<br>> ${ttyIn.value}`;
           if (cmd === 'clear') ttyOut.innerHTML = '';
-          else if (cmd === 'boost') ttyOut.innerHTML += `<br>CURRENT BOOST: ${window.autoSettings.boost} PSI`;
+          else if (cmd === 'boost') ttyOut.innerHTML += `<br>CURRENT BOOST: ${state.settings.boost} PSI`;
           else if (cmd === 'help') ttyOut.innerHTML += `<br>CMDS: clear, boost, help`;
           else ttyOut.innerHTML += `<br>UNKNOWN CMD`;
-          ttyIn.value = ''; ttyOut.scrollTop = ttyOut.scrollHeight;
+          ttyIn.value = '';
+          ttyOut.scrollTop = ttyOut.scrollHeight;
         }
       });
     }
   }
 
+  document.querySelectorAll('.app-icon').forEach(app => {
+    app.addEventListener('click', () => {
+      const icon = app.querySelector('.icon-shape');
+      icon.style.transform = "scale(0.9) skewX(10deg)";
+      setTimeout(() => icon.style.transform = "", 150);
+      const appName = app.getAttribute('data-app');
+      if (appName) openAppWindow(appName);
+    });
+  });
+
   document.addEventListener('input', e => {
     if (e.target.id === 'setting-boost') {
-      window.autoSettings.boost = e.target.value;
-      const val = document.getElementById('boost-val');
-      if (val) val.innerText = e.target.value;
+      state.settings.boost = e.target.value;
+      const boostVal = document.getElementById('boost-val');
       const topBarBoost = document.getElementById('topBarBoost');
-      if (topBarBoost) topBarBoost.innerText = e.target.value;
+      if (boostVal) boostVal.innerText = state.settings.boost;
+      if (topBarBoost) topBarBoost.innerText = state.settings.boost;
     }
   });
 
   document.addEventListener('change', e => {
-    if (['setting-tcs', 'setting-launch', 'setting-exhaust', 'setting-drift'].includes(e.target.id)) {
-      window.autoSettings[e.target.id.replace('setting-', '')] = e.target.checked;
+    const idMap = { 'setting-tcs': 'tcs', 'setting-launch': 'launch', 'setting-exhaust': 'exhaust', 'setting-drift': 'drift' };
+    if (idMap[e.target.id]) {
+      state.settings[idMap[e.target.id]] = e.target.checked;
     }
   });
 
   document.addEventListener('click', e => {
     const mapFile = e.target.closest('.map-file');
     if (mapFile) {
-      window.autoSettings = mapFile.dataset.map === 'base'
+      state.settings = mapFile.dataset.map === 'base'
         ? { boost: 14, tcs: true, launch: true, exhaust: false, drift: false }
         : { boost: 22, tcs: false, launch: true, exhaust: true, drift: true };
       const topBarBoost = document.getElementById('topBarBoost');
-      if (topBarBoost) topBarBoost.innerText = window.autoSettings.boost;
+      if (topBarBoost) topBarBoost.innerText = state.settings.boost;
       const settingsBody = document.querySelector('#win-EngineControl .window-body');
-      if (settingsBody) {
-        settingsBody.innerHTML = getSettingsHTML();
-        const win = document.getElementById('win-EngineControl');
-        if (win) {
-          win.style.boxShadow = "0 0 40px var(--neon-blue)";
-          setTimeout(() => win.style.boxShadow = "0 20px 50px rgba(0,0,0,0.9), inset 0 0 15px rgba(0,240,255,0.15)", 400);
-        }
-      }
-      mapFile.style.color = "var(--neon-red)";
-      setTimeout(() => mapFile.style.color = "", 300);
+      if (settingsBody) settingsBody.innerHTML = templates['Engine Control']();
     }
 
     if (e.target.id === 'flash-ecu-btn') {
-      e.target.innerText = "FLASHING..."; e.target.style.background = "var(--neon-red)"; e.target.style.color = "#000";
-      setTimeout(() => { e.target.innerText = "FLASH ECU"; e.target.style.background = "transparent"; e.target.style.color = "var(--neon-red)"; }, 1000);
+      e.target.innerText = "FLASHING...";
+      setTimeout(() => e.target.innerText = "FLASH ECU", 1000);
     }
 
     if (e.target.id === 'add-rem-btn') {
-      const dateVal = document.getElementById('cal-date').value, textVal = document.getElementById('rem-text').value;
-      if (dateVal && textVal) {
-        const list = document.getElementById('reminder-list');
-        if (list) list.innerHTML += `<li><span>${dateVal}: ${textVal}</span></li>`;
-        const remText = document.getElementById('rem-text');
-        if (remText) remText.value = '';
+      const dateVal = document.getElementById('cal-date')?.value;
+      const textVal = document.getElementById('rem-text')?.value;
+      const list = document.getElementById('reminder-list');
+      if (dateVal && textVal && list) {
+        list.innerHTML += `<li><span>${dateVal}: ${textVal}</span></li>`;
+        document.getElementById('rem-text').value = '';
       }
     }
   });
 
-  const cursorDot = document.getElementById('cursorDot'), cursorRing = document.getElementById('cursorRing');
   let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my;
-  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; if (cursorDot) { cursorDot.style.left = mx + "px"; cursorDot.style.top = my + "px"; } });
-  function animCursor() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; if (cursorRing) { cursorRing.style.left = rx + "px"; cursorRing.style.top = ry + "px"; } requestAnimationFrame(animCursor); }
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    el.cursorDot.style.left = `${mx}px`;
+    el.cursorDot.style.top = `${my}px`;
+  });
+
+  function animCursor() {
+    rx += (mx - rx) * 0.15;
+    ry += (my - ry) * 0.15;
+    el.cursorRing.style.left = `${rx}px`;
+    el.cursorRing.style.top = `${ry}px`;
+    requestAnimationFrame(animCursor);
+  }
   animCursor();
 
-  window.addEventListener('mousedown', () => { if (cursorRing) { cursorRing.style.width = '24px'; cursorRing.style.height = '24px'; cursorRing.style.borderColor = 'var(--neon-red)'; } });
+  window.addEventListener('mousedown', () => Object.assign(el.cursorRing.style, { width: '24px', height: '24px', borderColor: 'var(--neon-red)' }));
   window.addEventListener('mouseup', () => {
-    if (cursorRing) {
-      const isHover = cursorRing.classList.contains('hovered');
-      Object.assign(cursorRing.style, { width: isHover ? '50px' : '36px', height: isHover ? '50px' : '36px', borderColor: isHover ? 'var(--neon-red)' : 'var(--neon-blue)' });
-    }
+    const isHover = el.cursorRing.classList.contains('hovered');
+    Object.assign(el.cursorRing.style, { width: isHover ? '50px' : '36px', height: isHover ? '50px' : '36px', borderColor: isHover ? 'var(--neon-red)' : 'var(--neon-blue)' });
   });
 
-  document.querySelectorAll('button, .app-icon, .map-file').forEach(btn => {
-    btn.addEventListener('mouseenter', () => { if (cursorRing) cursorRing.classList.add('hovered'); });
-    btn.addEventListener('mouseleave', () => {
-      if (cursorRing) {
-        cursorRing.classList.remove('hovered');
-        Object.assign(cursorRing.style, { width: '36px', height: '36px', borderColor: 'var(--neon-blue)' });
-      }
-    });
+  document.querySelectorAll('button, .app-icon, .map-file').forEach(elTarget => {
+    elTarget.addEventListener('mouseenter', () => el.cursorRing.classList.add('hovered'));
+    elTarget.addEventListener('mouseleave', () => el.cursorRing.classList.remove('hovered'));
   });
 });

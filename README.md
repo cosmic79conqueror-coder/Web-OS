@@ -1,23 +1,12 @@
-TurboOS - Web Interface
+# Turbo OS (`v1.3`)
 
-A browser-based OS interface themed around car tuning, engine telemetry, and horsepower. Built with vanilla HTML, CSS, and JavaScript.
+An automotive-themed, browser-based mock operating system featuring an ECU boot sequence, interactive multi-window workspace, live telemetry simulation, and an embedded arcade minigame. Built with vanilla HTML5, CSS3, and ES6+.
 
-Features
-- Boot Sequence: RPM gauge animation and ECU flashing load screen.
-- Ignition Screen: Glitch text effects and an ignition button to launch the desktop.
-- HUD: Top bar displaying live system stats and boost pressure.
-Desktop Apps:
-- Engine Control: Tune target boost (10-30 psi) and toggle TCS, Launch Control, Exhaust, and Drift Mode.
-- Telemetry: Real-time dashboard stats.
-- Nav System: Embedded Google Maps window locked to Panvel/Navi Mumbai.
-- Media Deck: Spotify player embed.
-- Garage: File system to load ECU map files (base or pops maps update settings and boost readout).
-- Calendar: Scheduler supporting dates up to 2100 with reminder list management.
-- Console: Interactive TTY prompt supporting basic commands.
-- Arcade Strip: Right-hand side sliding drawer featuring a 15-second turbo clicker minigame and persistent highscore tracking via local storage.
-- Window Manager: Draggable, closable glassmorphic windows with dynamic z-index stacking.
-- Custom Cursor: Neon red and cyan follower cursor that reacts to interactive targets.
+## Features
 
-Setup
-1. Place index.html, style.css, and script.js in a single folder.
-2. Open index.html in a modern browser.
+* **Boot & Ignition Sequence**: RPM needle gauge sweep paired with animated boot-phase logs transitioning into a typewriter hero prompt.
+* **Window Manager**: Draggable, z-index-stacked app windows with dynamic template rendering.
+* **ECU & Vehicle Dynamics**: Live boost target sliders, toggles for TCS, launch control, active exhaust, and drift mode. Swap ECU binary maps via the filesystem.
+* **Interactive TTY Console**: Mini command-line interface supporting `help`, `boost`, and `clear`.
+* **Arcade Strip**: Slide-out "Turbo Clicker" RPM revving mini-game with local storage high-score tracking.
+* **Custom Cursor**: Lag-tracked neon reticle with interactive hover scaling and click states.
