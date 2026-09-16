@@ -1,6 +1,6 @@
 # WEBOS AIR
 A peaceful, web based operating system for those who like aviation :)
-![Screenshot of WebOS Air](images/Web%20OS%20SCcreenshot.png.png)
+![Screenshot of WebOS](images/Web%20OS%20SCcreenshot.png.png)
 ## Features
 - Welcome Screen
 - Cool background
