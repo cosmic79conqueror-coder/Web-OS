@@ -1,13 +1,11 @@
 # WEBOS
 A peaceful, web based operating system for those who like aviation :)
-![Screenshot of WebOS](images/Web%20OS%20SCcreenshot.png.png)
+![Screenshot of WebOS](images/WebOS Screenshot.png)
 ## Features
 - Welcome Screen
 - Cool background
 - Aviation Photos
 - Weather
-- Aviation Facts
-- Flight tracker uses lazy loading
 - Moveable and closeable windows that change the one on top to most recently accessed
 - Settings page with 12/24 hour time
 
