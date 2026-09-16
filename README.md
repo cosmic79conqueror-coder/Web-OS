@@ -1,6 +1,6 @@
 # WEBOS AIR
 A peaceful, web based operating system for those who like aviation :)
-![Screenshot of WebOS Air](https://webosair.charleilei.dpdns.org/images/Screenshot%202026-06-30%20164013.png)
+![Screenshot of WebOS Air](images/Web%20OS%20SCcreenshot.png.png)
 ## Features
 - Welcome Screen
 - Cool background
@@ -15,7 +15,7 @@ A peaceful, web based operating system for those who like aviation :)
 
 
 ## How to try
-Access the demonstration website at: https://webosair.charleilei.dpdns.org/
+Access the demonstration website at: https://cosmic79conqueror-coder.github.io/Web-OS/
 
 
 ## Attribution
