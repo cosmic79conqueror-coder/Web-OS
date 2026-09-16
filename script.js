@@ -1,117 +1,205 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const bootScreen = document.getElementById('bootScreen');
-  const homeScreen = document.getElementById('homeScreen');
-  const progressFill = document.getElementById('progressFill');
-  const bootStatus = document.getElementById('bootStatus');
-  const clockDisplay = document.getElementById('clockDisplay');
-  
-  const boostRange = document.getElementById('boostRange');
-  const boostVal = document.getElementById('topBoost');
-  const flashBtn = document.getElementById('flashBtn');
+var biggestIndex = 1;
 
-  const arcadeBtn = document.getElementById('arcadeBtn');
-  const scoreVal = document.getElementById('scoreVal');
-  const timerVal = document.getElementById('timerVal');
-  const highScoreVal = document.getElementById('highScoreVal');
+var welcomeScreen = document.querySelector("#welcome");
+var welcomeScreenClose = document.querySelector("#welcomeclose");
+var welcomeScreenOpen = document.querySelector("#welcomeopen");
 
-  const cursorDot = document.getElementById('cursorDot');
-  const cursorRing = document.getElementById('cursorRing');
+var aboutMeScreen = document.querySelector("#aboutme");
+var aboutMeScreenClose = document.querySelector("#aboutmeclose");
+var aboutMeScreenOpen = document.querySelector("#aboutMeScreenOpen");
 
-  let currentProgress = 0;
-  const bootPhases = ["MAPPING ECU...", "SPOOFING SENSORS...", "INITIALIZING TELEMETRY...", "SYSTEM READY."];
-  
-  const bootInterval = setInterval(() => {
-    currentProgress += Math.floor(Math.random() * 15) + 5;
-    if (currentProgress >= 100) {
-      currentProgress = 100;
-      clearInterval(bootInterval);
-      setTimeout(() => {
-        bootScreen.classList.add('hidden');
-        homeScreen.classList.remove('hidden');
-      }, 500);
-    }
-    progressFill.style.width = currentProgress + '%';
-    const phaseIndex = Math.min(Math.floor((currentProgress / 100) * bootPhases.length), bootPhases.length - 1);
-    bootStatus.textContent = bootPhases[phaseIndex];
-  }, 120);
+var photosScreen = document.querySelector("#photos");
+var photosScreenClose = document.querySelector("#photosclose");
+var photosScreenOpen = document.querySelector("#photosScreenOpen");
 
-  setInterval(() => {
-    const now = new Date();
-    clockDisplay.textContent = now.toTimeString().split(' ')[0];
-  }, 1000);
+var weather = document.querySelector("#weather");
+var weatherClose = document.querySelector("#weatherClose");
+var weatherOpen = document.querySelector("#weatherOpen");
 
-  boostRange.addEventListener('input', (e) => {
-    boostVal.textContent = e.target.value;
-  });
+var notes = document.querySelector("#notes");
+var notesClose = document.querySelector("#notesclose");
+var notesOpen = document.querySelector("#notesOpen");
 
-  flashBtn.addEventListener('click', () => {
-    flashBtn.textContent = "FLASHING...";
-    setTimeout(() => {
-      flashBtn.textContent = "FLASH ECU";
-    }, 800);
-  });
+var flights = document.querySelector("#flights");
+var flightsClose = document.querySelector("#flightsClose");
+var flightsOpen = document.querySelector("#flightsOpen");
 
-  let arcadeActive = false;
-  let score = 0;
-  let timeLeft = 15;
-  let arcadeTimer = null;
-  let highScore = localStorage.getItem('turboHighScore') || 0;
-  highScoreVal.textContent = highScore;
+var settings = document.querySelector("#settings");
+var settingsClose = document.querySelector("#settingsClose");
+var settingsOpen = document.querySelector("#settingsOpen");
 
-  arcadeBtn.addEventListener('click', () => {
-    if (!arcadeActive) {
-      arcadeActive = true;
-      score = 0;
-      timeLeft = 15;
-      scoreVal.textContent = score;
-      timerVal.textContent = timeLeft;
-      arcadeBtn.textContent = "JAM THROTTLE";
+var topBar = document.querySelector("#top");
 
-      arcadeTimer = setInterval(() => {
-        timeLeft--;
-        timerVal.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(arcadeTimer);
-          arcadeActive = false;
-          arcadeBtn.textContent = "RESTART RUN";
-          if (score > highScore) {
-            highScore = score;
-            localStorage.setItem('turboHighScore', highScore);
-            highScoreVal.textContent = highScore;
-          }
-        }
-      }, 1000);
-    }
+var hour = 0;
 
-    if (arcadeActive) {
-      score += Math.floor(Math.random() * 300) + 100;
-      scoreVal.textContent = score;
-    }
-  });
+function dragElement(elmnt) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let ringX = mouseX;
-  let ringY = mouseY;
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
-  });
-
-  function renderCursor() {
-    ringX += (mouseX - ringX) * 0.2;
-    ringY += (mouseY - ringY) * 0.2;
-    cursorRing.style.left = ringX + 'px';
-    cursorRing.style.top = ringY + 'px';
-    requestAnimationFrame(renderCursor);
+  const header = document.getElementById(elmnt.id + "header");
+  if (header) {
+    header.onmousedown = dragMouseDown;
+  } else {
+    elmnt.onmousedown = dragMouseDown;
   }
-  renderCursor();
 
-  document.querySelectorAll('button, input').forEach((el) => {
-    el.addEventListener('mouseenter', () => cursorRing.classList.add('hovered'));
-    el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovered'));
-  });
+  function dragMouseDown(e) {
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+window.onload = function () {
+  dragElement(document.getElementById("welcome"));
+  dragElement(document.getElementById("aboutme"));
+  dragElement(document.getElementById("photos"));
+  dragElement(document.getElementById("notes"));
+  dragElement(document.getElementById("weather"));
+  dragElement(document.getElementById("flights"));
+  dragElement(document.getElementById("settings"));
+};
+
+function closeWindow(element) {
+  element.style.display = "none";
+}
+
+function openWindow(element) {
+  element.style.display = "block";
+  biggestIndex++;
+  element.style.zIndex = biggestIndex;
+  topBar.style.zIndex = biggestIndex + 1;
+}
+
+function handleWindowTap(element) {
+  biggestIndex++;
+  element.style.zIndex = biggestIndex;
+  topBar.style.zIndex = biggestIndex + 1;
+}
+
+function addWindowTapHandling(element) {
+  element.addEventListener("mousedown", () => handleWindowTap(element));
+}
+
+addWindowTapHandling(welcomeScreen);
+addWindowTapHandling(aboutMeScreen);
+addWindowTapHandling(photosScreen);
+addWindowTapHandling(notes);
+addWindowTapHandling(weather);
+addWindowTapHandling(flights);
+addWindowTapHandling(settings);
+
+welcomeScreenClose.addEventListener("click", function () {
+  closeWindow(welcomeScreen);
+});
+
+welcomeScreenOpen.addEventListener("click", function () {
+  openWindow(welcomeScreen);
+});
+
+aboutMeScreenClose.addEventListener("click", function () {
+  closeWindow(aboutMeScreen);
+});
+
+aboutMeScreenOpen.addEventListener("click", function () {
+  openWindow(aboutMeScreen);
+});
+
+photosScreenClose.addEventListener("click", function () {
+  closeWindow(photosScreen);
+});
+
+photosScreenOpen.addEventListener("click", function () {
+  openWindow(photosScreen);
+});
+
+notesClose.addEventListener("click", function () {
+  closeWindow(notes);
+});
+
+notesOpen.addEventListener("click", function () {
+  openWindow(notes);
+});
+
+weatherClose.addEventListener("click", function () {
+  closeWindow(weather);
+});
+
+weatherOpen.addEventListener("click", function () {
+  openWindow(weather);
+});
+
+settingsClose.addEventListener("click", function () {
+  closeWindow(settings);
+});
+
+settingsOpen.addEventListener("click", function () {
+  openWindow(settings);
+});
+
+flightsClose.addEventListener("click", function () {
+  closeWindow(flights);
+});
+
+flightsOpen.addEventListener("click", function () {
+  openWindow(flights);
+});
+
+
+
+document.getElementById("notepad").value =
+  localStorage.getItem("notepad_text") || "";
+
+document.getElementById("notepad").addEventListener("input", function () {
+  localStorage.setItem("notepad_text", this.value);
+});
+
+
+
+// Time
+function updateTime() {
+  if (hour == 0) {
+    const currentTime = new Date().toLocaleString(undefined, { hour12: false });
+    document.querySelector("#timeElement").innerHTML = currentTime;
+  }
+  else {
+    const currentTime = new Date().toLocaleString(undefined, { hour12: true });
+    document.querySelector("#timeElement").innerHTML = currentTime;
+  }
+}
+setInterval(updateTime, 1000);
+
+
+
+// Settings
+const checkbox = document.getElementById("hour");
+
+checkbox.addEventListener("change", function () {
+  if (this.checked) {
+    hour = 1;
+    const currentTime = new Date().toLocaleString(undefined, { hour12: true });
+    document.querySelector("#timeElement").innerHTML = currentTime;
+
+  } else {
+    hour = 0;
+    const currentTime = new Date().toLocaleString(undefined, { hour12: false });
+    document.querySelector("#timeElement").innerHTML = currentTime;
+
+  }
 });

@@ -1,76 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+    <title>WebOS Air</title>
+    <link rel="icon" type="image/x-icon" href="images/Aeroplane logo.webp">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-  <div class="hero-bg"></div>
-  <div class="scanlines"></div>
 
-  <section class="screen boot-screen" id="bootScreen">
-    <div class="boot-card">
-      <h1 class="glitch-text">TURBO OS</h1>
-      <p id="bootStatus">INITIALIZING ECU...</p>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
+<body
+    style="background-image:url(images/Background.jpg);background-size:cover;background-repeat:no-repeat;background-position:center;background-attachment:fixed;">
+    <!--Top Bar Below!!-->
+    <div style="display:flex;justify-content:space-between;backdrop-filter: blur(5px); background-color: rgba(0, 94, 255, 0.25); color: #fff; justify-content: space-between;"
+        id="top">
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;">WebOS Air
+        </p>
+        <img src="images/Aeroplane logo.webp" width="30px" height="30px">
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;"
+            id="timeElement">00:00:00</p>
     </div>
-  </section>
+    <!--Windows Below!!-->
 
-  <section class="screen home-screen hidden" id="homeScreen">
-    <header class="top-nav">
-      <div class="logo">TURBO OS</div>
-      <div class="telemetry-info">
-        <span>BOOST: <span id="topBoost">14</span> PSI</span>
-        <span>TEMP: <span class="text-red">85°C</span></span>
-        <span>STATUS: <span class="text-blue">ONLINE</span></span>
-      </div>
-      <div class="clock" id="clockDisplay">00:00:00</div>
-    </header>
-
-    <div class="workspace">
-      <div class="left-panel">
-        <div class="box">
-          <h3>SETTINGS & ECU</h3>
-          <div class="control-row">
-            <label>Boost Target</label>
-            <input type="range" id="boostRange" min="10" max="30" value="14">
-          </div>
-          <div class="control-row">
-            <span>Drift Mode</span>
-            <input type="checkbox" id="driftCheck">
-          </div>
-          <div class="control-row">
-            <span>Launch Control</span>
-            <input type="checkbox" id="launchCheck" checked>
-          </div>
-          <button class="btn" id="flashBtn">FLASH ECU</button>
+    <div style="background-color:#0006ab;color:white;opacity:70%;border:solid;padding:10px;position:absolute;border-radius:10px;width:40%;top:50%;left:50%;transform:translate(-50%, -50%);"
+        id="welcome">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="welcomeheader">
+            <p style="cursor: pointer;">
+            <div id="welcomeclose" style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
         </div>
-
-        <div class="box">
-          <h3>MONITOR</h3>
-          <p>RPM: <span class="text-red">8,450</span></p>
-          <p>Oil Pressure: <span class="text-blue">NOMINAL</span></p>
-          <p>GPS: PANVEL, MH</p>
-        </div>
-      </div>
-
-      <div class="arcade-panel">
-        <h3>ARCADE ZONE</h3>
-        <p class="arcade-sub">TURBO CLICKER</p>
-        <div class="score-display"><span id="scoreVal">0</span> RPM</div>
-        <div class="timer-display">TIME: <span id="timerVal">15</span>s</div>
-        <button class="btn red-btn" id="arcadeBtn">JAM THROTTLE</button>
-        <div class="high-score">HIGH SCORE: <span id="highScoreVal">0</span></div>
-      </div>
+        <h1>WebOS</h1>
+        <h2>A web-based operating system designed for aviation enthusiests!</h2>
+        <p>I hope you enjoy the OS!</p>
     </div>
-  </section>
 
-  <script src="script.js"></script>
+
+    <div style="background-color:#00f7ff;color:white;border:solid;padding:10px;position:absolute;border-radius:10px;width:20%;top:50%;left:15%;transform:translate(-50%, -50%);display:none;height:45%;overflow-y:auto;"
+        id="aboutme">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="aboutmeheader">
+            <p style="cursor: pointer;">
+            <div id="aboutmeclose" style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
+        </div>
+        <h1 style="margin-bottom:0;">Flight Facts!</h1>
+        <h2 style="margin:0;color:black;font-size:15px;">Interesting information and history in aviation!</h2>
+        <h2 style="margin-bottom:0;">Largest Plane</h2>
+        <p style="margin:0;color:black;font-size:15px;">Currently, the heaviest and longest plane in the world is the
+            Antonov An-225 Mriya. However, only one was ever flown.
+            There is a plane in development (the Radia WindRunner) which will surpass this size, being 24m longer!
+        </p>
+        <h2 style="margin-bottom:0;">Largest Helicopter</h2>
+        <p style="margin:0;color:black;font-size:15px;">The largest helicopter in the world currently is Mil Mi-26 and
+            was built by the Soviet/Russian Mil Design
+            Bureau.
+            It's maximum takeoff weight is 56,000 kg!
+        </p>
+        <h2 style="margin-bottom:0;">Extra facts!</h2>
+        <p style="margin:0;color:black;font-size:15px;">There is an estimated 400,000 to 600,000 aircraft worldwide!
+            Also, there is around 40,000 to 44,000 airports worldwide!</p>
+    </div>
+
+    <div style="background-color:#00f7ff;color:white;border:solid;padding:10px;position:absolute;border-radius:10px;width:20%;top:50%;left:85%;transform:translate(-50%, -50%);display:none;height:45%;overflow-y:auto;"
+        id="photos">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="photosheader">
+            <p style="cursor: pointer;">
+            <div id="photosclose" style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
+        </div>
+        <h1>Aviation Photos!</h1>
+        <img src="images/Aviation 1.jpg" width="200">
+        <img src="images/Aviation 2.jpg" width="200">
+        <img src="images/Aviation 3.jpg" width="200">
+        <img src="images/Aviation 4.jpg" width="200">
+        <img src="images/Aviation 5.jpg" width="200">
+    </div>
+
+
+
+    <div style="background-color:#00f7ff;color:white;border:solid;padding:10px;position:absolute;border-radius:10px;width:20%;top:50%;left:55%;transform:translate(-50%, -50%);display:none;height:45%;"
+        id="notes">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="notesheader">
+            <p style="cursor: pointer;">
+            <div id="notesclose" style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
+        </div>
+        <h1>Notes</h1>
+        <div style="max-width:500px;margin:auto;">
+            <textarea id="notepad" style="width:100%;height:200px;font-size:16px;background-color:beige;"></textarea>
+        </div>
+    </div>
+
+
+
+    <div style="background-color:#00f7ff;color:white;border:solid;padding:10px;position:absolute;border-radius:10px;width:20%;top:60%;left:35%;transform:translate(-50%, -50%);display:none;height:30%;"
+        id="weather">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="weatherheader">
+            <p style="cursor: pointer;">
+            <div id="weatherClose" style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
+        </div>
+        <h1 style="margin-bottom:0;">Weather</h1>
+        <div id="weather-box" style="font-family:Arial; color:white; padding:10px;flex-shrink:0;">
+            Weather incoming...
+        </div>
+        <script>
+            async function loadWeather() {
+                const box = document.getElementById("weather-box");
+
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    try {
+                        const lat = pos.coords.latitude;
+                        const lon = pos.coords.longitude;
+                        const iframe = document.getElementById("map");
+
+
+                        const weather = await fetch(
+                            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
+                        ).then(r => r.json());
+
+                        const temp = weather.current_weather.temperature;
+                        const wind = weather.current_weather.windspeed;
+                        const code = weather.current_weather.weathercode;
+
+                        box.innerHTML = `
+
+                <h2><strong>${temp}C</strong></h2>
+                <p>Wind: ${wind} km/h</p>
+                <p>Condition code: ${code}</p>
+            `;
+                    } catch (e) {
+                        box.innerHTML = "Weather unavailable.";
+                    }
+                }, () => {
+                    box.innerHTML = "Location permission denied.";
+                });
+            }
+
+            loadWeather();
+        </script>
+
+    </div>
+
+    <div style="background-color:#0a3d3f;color:white;border:solid;padding:10px;position:absolute;border-radius:10px;width:40%;top:40%;left:45%;transform:translate(-50%, -50%);display:none;height:60%;"
+        id="flights">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="flightsheader">
+            <p style="cursor: pointer;">
+            <div id="flightsClose" style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
+        </div>
+        <h1>Flight Radar</h1>
+<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" width=100% height=80% loading="lazy" src="https://www.airnavradar.com/?widget=1&z=6&lat=37.60318&lng=-95.86094&hideAirportWeather=true&hideAirportCard=true&airportCardRight=true&hideFlightCard=true&showLabels=true&showFn=true"></iframe>
+
+
+    </div>
+
+    <div style="background-color:#0a3d3f;color:white;border:solid;padding:10px;position:absolute;border-radius:10px;width:20%;top:40%;left:65%;transform:translate(-50%, -50%);display:none;height:20%;"
+        id="settings">
+        <div style="width:100%;background-color:rgb(78, 63, 243);opacity:70%;margin:0;border-radius:20px;cursor:pointer;height:20px;"
+            id="settingsheader">
+            <p style="cursor: pointer;">
+            <div id="settingsClose"
+                style="background-color:red;border-radius:20px;width:20px;height:20px;margin-top:0;">
+            </div>
+            </p>
+        </div>
+        <h1>Settings</h1>
+        <input type="checkbox" id="hour" name="hour" value="12 Hour Time">
+        <label for="hour">12 Hour Time</label>
+    </div>
+
+
+    <!--Bottom Bar-->
+    <div
+        style="display:flex;justify-content:center;backdrop-filter: blur(5px); background-color: rgba(0, 94, 255, 0.25);width:60%;color:#fff;position:fixed;bottom:2%;left:20%;border-radius:20px;">
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="welcomeopen">WebOS Air</p>
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="aboutMeScreenOpen">Flight Facts</p>
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="photosScreenOpen">Avitation Photos</p>
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="notesOpen">Notes</p>
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="weatherOpen">Weather</p>
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="flightsOpen">Flight Radar</p>
+        <p style="margin:5px 20px 5px 20px;background-color:rgb(81, 154, 232);border-radius:20px;padding:4px;cursor:pointer;"
+            id="settingsOpen">Settings</p>
+    </div>
+    <script src="script.js"></script>
 </body>
+
 </html>
