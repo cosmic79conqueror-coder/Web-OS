@@ -4,9 +4,6 @@ var welcomeScreen = document.querySelector("#welcome");
 var welcomeScreenClose = document.querySelector("#welcomeclose");
 var welcomeScreenOpen = document.querySelector("#welcomeopen");
 
-var aboutMeScreen = document.querySelector("#aboutme");
-var aboutMeScreenClose = document.querySelector("#aboutmeclose");
-var aboutMeScreenOpen = document.querySelector("#aboutMeScreenOpen");
 
 var photosScreen = document.querySelector("#photos");
 var photosScreenClose = document.querySelector("#photosclose");
@@ -16,13 +13,6 @@ var weather = document.querySelector("#weather");
 var weatherClose = document.querySelector("#weatherClose");
 var weatherOpen = document.querySelector("#weatherOpen");
 
-var notes = document.querySelector("#notes");
-var notesClose = document.querySelector("#notesclose");
-var notesOpen = document.querySelector("#notesOpen");
-
-var flights = document.querySelector("#flights");
-var flightsClose = document.querySelector("#flightsClose");
-var flightsOpen = document.querySelector("#flightsOpen");
 
 var settings = document.querySelector("#settings");
 var settingsClose = document.querySelector("#settingsClose");
@@ -68,11 +58,8 @@ function dragElement(elmnt) {
 
 window.onload = function () {
   dragElement(document.getElementById("welcome"));
-  dragElement(document.getElementById("aboutme"));
   dragElement(document.getElementById("photos"));
-  dragElement(document.getElementById("notes"));
   dragElement(document.getElementById("weather"));
-  dragElement(document.getElementById("flights"));
   dragElement(document.getElementById("settings"));
 };
 
@@ -98,11 +85,8 @@ function addWindowTapHandling(element) {
 }
 
 addWindowTapHandling(welcomeScreen);
-addWindowTapHandling(aboutMeScreen);
 addWindowTapHandling(photosScreen);
-addWindowTapHandling(notes);
 addWindowTapHandling(weather);
-addWindowTapHandling(flights);
 addWindowTapHandling(settings);
 
 welcomeScreenClose.addEventListener("click", function () {
@@ -113,28 +97,12 @@ welcomeScreenOpen.addEventListener("click", function () {
   openWindow(welcomeScreen);
 });
 
-aboutMeScreenClose.addEventListener("click", function () {
-  closeWindow(aboutMeScreen);
-});
-
-aboutMeScreenOpen.addEventListener("click", function () {
-  openWindow(aboutMeScreen);
-});
-
 photosScreenClose.addEventListener("click", function () {
   closeWindow(photosScreen);
 });
 
 photosScreenOpen.addEventListener("click", function () {
   openWindow(photosScreen);
-});
-
-notesClose.addEventListener("click", function () {
-  closeWindow(notes);
-});
-
-notesOpen.addEventListener("click", function () {
-  openWindow(notes);
 });
 
 weatherClose.addEventListener("click", function () {
@@ -151,23 +119,6 @@ settingsClose.addEventListener("click", function () {
 
 settingsOpen.addEventListener("click", function () {
   openWindow(settings);
-});
-
-flightsClose.addEventListener("click", function () {
-  closeWindow(flights);
-});
-
-flightsOpen.addEventListener("click", function () {
-  openWindow(flights);
-});
-
-
-
-document.getElementById("notepad").value =
-  localStorage.getItem("notepad_text") || "";
-
-document.getElementById("notepad").addEventListener("input", function () {
-  localStorage.setItem("notepad_text", this.value);
 });
 
 
