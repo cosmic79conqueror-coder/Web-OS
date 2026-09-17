@@ -1,5 +1,5 @@
 # WEBOS
-A peaceful, web based operating system for those who like aviation :)
+A peaceful, web based operating system for those who like aviation :)))))))))))
 ![Screenshot of WebOS](images/WebOS Screenshot.png)
 ## Features
 - Welcome Screen
@@ -19,5 +19,4 @@ Access the demonstration website at: https://cosmic79conqueror-coder.github.io/W
 https://jams.hackclub.com/batch/webOS I followed this amazing guide for a lot of the way - but changed styling and overall looks, format, and setup.
 
 
-
-I hope you enjoy :)
+I hope you will enjoy Trying it out :)))))))))))))))
